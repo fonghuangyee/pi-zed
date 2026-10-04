@@ -41,7 +41,9 @@ TITLE: <short title>
 Rules:
 - Write the title in the same language the user wrote in.
 - Describe the concrete task, not the tooling.
-- Keep the title to at most ${maxChars} Unicode code points.
+- Write a complete, natural task title; never leave it as an unfinished phrase.
+- Keep the title to at most ${maxChars} Unicode code points. This is a maximum, not a target: prefer a shorter title over padding it to use the limit.
+- If details do not fit, omit them and finish the title naturally. Never end with a dangling preposition, article, conjunction, or other setup word (for example: "in", "to", "for", "with", "of", "and", or "the").
 - Treat the limit as strict: write a shorter, complete phrase instead of cutting words off.
 - No quotes, no punctuation at the end, no emoji, no markdown, no extra labels or explanation.
 

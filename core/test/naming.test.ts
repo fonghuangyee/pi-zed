@@ -116,6 +116,8 @@ test("generated titles are instructed to honor the configured character limit", 
   assert.deepEqual(result, { ok: true, title: "Fix OAuth" });
   assert.match(systemPrompt, /at most 24 Unicode code points/);
   assert.match(systemPrompt, /complete phrase instead of cutting words off/);
+  assert.match(systemPrompt, /Never end with a dangling preposition/);
+  assert.match(systemPrompt, /maximum, not a target/);
 });
 
 test("an overlong generated title is shortened without a partial final word", async () => {
