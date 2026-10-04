@@ -10,7 +10,7 @@ A Zed terminal status extension for the [Pi coding agent](https://pi.dev), based
 - Generates a concise AI title for the session in the language of the conversation.
 - Supports `/rename` to regenerate a title from the conversation or set one explicitly.
 - Provides `/zed` settings for spinner, completion bell, title generation, naming model,
-  and the maximum title length.
+  title capitalization, and the maximum title length.
 - Activates only in Zed terminals and stands down inside tmux.
 
 ## Install
@@ -30,17 +30,19 @@ Open the interactive settings menu with:
 /zed
 ```
 
-Use the **title-max-chars** setting to choose the maximum title length. It defaults to 32 Unicode
-code points. Title generation is instructed to produce a complete title within that limit. If a
-response still exceeds it, the fallback shortens only at a word boundary and refuses to apply an
-unspaced fragment.
+Use **title-case** to choose Title Case or all lowercase (the default) for generated, restored, and
+explicitly renamed titles. Use **title-max-chars** to choose the maximum title length. It defaults
+to 32 Unicode code points. Title generation is instructed to produce a complete title within that
+limit. If a response still exceeds it, the fallback shortens only at a word boundary and refuses to
+apply an unspaced fragment.
 
-Settings are saved at `~/.pi/agent/pi-zed.json`. The title limit can also be edited there:
+Settings are saved at `~/.pi/agent/pi-zed.json`. These naming options can also be edited there:
 
 ```json
 {
   "naming": {
-    "maxChars": 48
+    "maxChars": 48,
+    "caseStyle": "lowercase"
   }
 }
 ```

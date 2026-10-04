@@ -35,6 +35,7 @@ export const DEFAULT_NAMING: NamingConfig = {
   model: "",
   thinking: "low",
   maxChars: DEFAULT_TITLE_MAX_CHARS,
+  caseStyle: "lowercase",
 };
 
 export function settingsPath(fileName: string): string {
@@ -98,6 +99,10 @@ export function normalizeNaming(value: unknown, defaults: NamingConfig = DEFAULT
     model: readOptionalString(naming.model, defaults.model),
     thinking: readString(naming.thinking, defaults.thinking),
     maxChars: Math.max(1, Math.floor(readNumber(naming.maxChars, defaults.maxChars))),
+    caseStyle:
+      naming.caseStyle === "title" || naming.caseStyle === "lowercase"
+        ? naming.caseStyle
+        : defaults.caseStyle,
   };
 }
 

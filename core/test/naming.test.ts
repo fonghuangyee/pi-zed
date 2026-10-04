@@ -4,6 +4,7 @@ import test from "node:test";
 import {
   compactTitle,
   describeRenameFailure,
+  formatTitle,
   generateTitle,
   getFirstUserPrompt,
   normalizeThinkingLevel,
@@ -11,7 +12,13 @@ import {
   sanitizeTitle,
 } from "../naming.ts";
 
-const NAMING_CONFIG = { enabled: true, model: "", thinking: "low", maxChars: 32 };
+const NAMING_CONFIG = {
+  enabled: true,
+  model: "",
+  thinking: "low",
+  maxChars: 32,
+  caseStyle: "title" as const,
+};
 
 function contextWithProviderStream(options: {
   streamSimple?: unknown;
@@ -46,6 +53,11 @@ test("a bare single line is treated as the title", () => {
 
 test("sanitizeTitle drops newlines, control characters, and surrounding quotes", () => {
   assert.equal(sanitizeTitle('  "ログイン\n処理の\t修正"  '), "ログイン 処理の 修正");
+});
+
+test("title formatting supports title case and lowercase", () => {
+  assert.equal(formatTitle("fix OAuth callback", "title"), "Fix OAuth Callback");
+  assert.equal(formatTitle("Fix OAuth Callback", "lowercase"), "fix oauth callback");
 });
 
 test("a title within the limit is kept as is", () => {

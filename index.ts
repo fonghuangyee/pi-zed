@@ -7,6 +7,7 @@ import {
   createSimpleSpinner,
   createTerminalTitleRuntime,
   createTitleController,
+  formatTitle,
   getFirstUserPrompt,
   installTitleSuffixStripper,
   isMainAgentSession,
@@ -40,7 +41,10 @@ export default function piZedExtension(pi: ExtensionAPI) {
     pi,
     getNaming: () => settings.naming,
     applyTitle(rawTitle) {
-      const normalized = compactTitle(rawTitle, settings.naming.maxChars);
+      const normalized = compactTitle(
+        formatTitle(rawTitle, settings.naming.caseStyle),
+        settings.naming.maxChars,
+      );
       if (!normalized) return undefined;
 
       pi.setSessionName(normalized);
@@ -108,6 +112,16 @@ export default function piZedExtension(pi: ExtensionAPI) {
         get: () => settings.naming.maxChars,
         set: (value) => {
           settings.naming.maxChars = Math.max(1, Math.floor(value));
+        },
+      },
+      {
+        key: "title-case",
+        type: "enum",
+        values: ["title", "lowercase"],
+        describe: (value) => value === "title" ? "Capitalize each word" : "all lowercase",
+        get: () => settings.naming.caseStyle,
+        set: (value) => {
+          settings.naming.caseStyle = value as typeof settings.naming.caseStyle;
         },
       },
       {

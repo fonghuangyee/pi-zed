@@ -8,6 +8,7 @@ const NAMING_SOURCE_CHAR_MAX = 4000;
 export const DEFAULT_TITLE_MAX_CHARS = 32;
 
 export type NamingSource = "user_message" | "conversation";
+export type TitleCaseStyle = "title" | "lowercase";
 
 export type NamingConfig = {
   enabled: boolean;
@@ -15,6 +16,7 @@ export type NamingConfig = {
   model: string;
   thinking: string;
   maxChars: number;
+  caseStyle: TitleCaseStyle;
 };
 
 export type RenameFailureReason =
@@ -57,6 +59,13 @@ export function sanitizeTitle(value: string): string {
     .replace(/\s+/g, " ")
     .replace(/^[\s"'`“”‘’]+|[\s"'`“”‘’]+$/g, "")
     .trim();
+}
+
+export function formatTitle(value: string, caseStyle: TitleCaseStyle): string {
+  if (caseStyle === "lowercase") return value.toLowerCase();
+  return value.replace(/(^|\s)(\p{L})/gu, (_match, separator: string, letter: string) =>
+    `${separator}${letter.toUpperCase()}`,
+  );
 }
 
 export function compactTitle(value: string, maxChars = DEFAULT_TITLE_MAX_CHARS): string | undefined {
