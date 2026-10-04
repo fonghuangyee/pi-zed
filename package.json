@@ -1,0 +1,48 @@
+{
+  "name": "pi-zed",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A Pi coding agent extension for deep integration with the Zed editor",
+  "keywords": [
+    "pi-package",
+    "pi-coding-agent",
+    "pi-extension",
+    "zed",
+    "spinner",
+    "notification",
+    "ai-title"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "files": [
+    "index.ts",
+    "settings.ts",
+    "core/*.ts",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "node --test --experimental-strip-types \"core/test/*.test.ts\" \"test/*.test.ts\""
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-ai": "^0.83.0",
+    "@earendil-works/pi-coding-agent": "^0.83.0",
+    "@earendil-works/pi-tui": "^0.83.0"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-ai": "^0.83.0",
+    "@earendil-works/pi-coding-agent": "^0.83.0",
+    "@earendil-works/pi-tui": "^0.83.0",
+    "@types/node": "^25.0.10",
+    "typescript": "^5.9.0"
+  }
+}

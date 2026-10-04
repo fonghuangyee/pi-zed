@@ -1,0 +1,6 @@
+This project incorporates work from pi-agent-status by yuki-kisaku:
+https://github.com/yuki-kisaku/pi-agent-status
+
+The upstream project is licensed under the MIT License. Its copyright and license notice
+are retained in LICENSE. This fork adds an editable title-length setting and adjusts title
+length handling.
