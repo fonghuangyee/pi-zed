@@ -66,7 +66,9 @@ npm test
 
 ## Credit and license
 
-This project incorporates work from [pi-agent-status](https://github.com/yuki-kisaku/pi-agent-status)
-by **yuki-kisaku**. The upstream project's MIT copyright and permission notice are retained in
-[LICENSE](LICENSE); see also [NOTICE](NOTICE). This fork adds an editable maximum-title-length
+This project adapts code and functionality from the Zed integration and shared core in
+[pi-agent-status](https://github.com/yuki-kisaku/pi-agent-status) by **yuki-kisaku**. See
+[NOTICE](NOTICE) for the specific upstream-derived features and the upstream copyright and MIT
+permission notice. Original pi-zed contributions are copyright **fonghuangyee** and licensed
+under the MIT License in [LICENSE](LICENSE). This fork adds an editable maximum-title-length
 setting and safer handling of long titles.
