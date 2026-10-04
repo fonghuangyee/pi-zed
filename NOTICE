@@ -10,10 +10,8 @@ Upstream-derived functionality in pi-zed includes:
 - Interactive settings for the spinner, completion bell, and title generation/model.
 - Shared title, spinner, completion-alert, and settings implementation code.
 
-This fork adds the editable maximum-title-length setting and safer handling of long titles.
-
-The original upstream copyright and MIT permission notice for the upstream-derived work are
-reproduced below. Original pi-zed contributions are copyright fonghuangyee; see LICENSE.
+The original upstream copyright and MIT permission notice for this upstream-derived work are
+reproduced below.
 
 MIT License
 
