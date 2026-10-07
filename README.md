@@ -31,10 +31,9 @@ Open the interactive settings menu with:
 ```
 
 Use **title-case** to choose Title Case or all lowercase (the default) for generated, restored, and
-explicitly renamed titles. Use **title-max-chars** to choose the maximum title length. It defaults
-to 32 Unicode code points. Title generation is instructed to produce a complete title within that
-limit. If a response still exceeds it, the fallback shortens only at a word boundary and refuses to
-apply an unspaced fragment.
+explicitly renamed titles. Use **title-max-chars** to choose the requested maximum title length. It
+defaults to 32 Unicode code points. This limit is guidance for the naming model; longer responses
+are preserved rather than truncated into an incomplete title.
 
 Settings are saved at `~/.pi/agent/pi-zed.json`. These naming options can also be edited there:
 

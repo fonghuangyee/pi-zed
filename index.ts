@@ -2,7 +2,7 @@ import type { ExtensionAPI, ExtensionCommandContext, ExtensionContext } from "@e
 import { basename } from "node:path";
 
 import {
-  compactTitle,
+  sanitizeTitle,
   createSettingsCommand,
   createSimpleSpinner,
   createTerminalTitleRuntime,
@@ -41,10 +41,7 @@ export default function piZedExtension(pi: ExtensionAPI) {
     pi,
     getNaming: () => settings.naming,
     applyTitle(rawTitle) {
-      const normalized = compactTitle(
-        formatTitle(rawTitle, settings.naming.caseStyle),
-        settings.naming.maxChars,
-      );
+      const normalized = sanitizeTitle(formatTitle(rawTitle, settings.naming.caseStyle)) || undefined;
       if (!normalized) return undefined;
 
       pi.setSessionName(normalized);

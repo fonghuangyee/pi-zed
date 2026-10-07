@@ -35,20 +35,14 @@ export type GenerateTitleResult =
 function titleSystemPrompt(maxChars: number): string {
   return `You name coding sessions.
 
-Reply with exactly one line:
+Reply with exactly:
 TITLE: <short title>
 
 Rules:
-- Write the title in the same language the user wrote in.
-- Describe the concrete task, not the tooling.
-- Write a complete, natural task title; never leave it as an unfinished phrase.
-- Keep the title to at most ${maxChars} Unicode code points. This is a maximum, not a target: prefer a shorter title over padding it to use the limit.
-- If details do not fit, omit them and finish the title naturally. Never end with a dangling preposition, article, conjunction, or other setup word (for example: "in", "to", "for", "with", "of", "and", or "the").
-- Treat the limit as strict: write a shorter, complete phrase instead of cutting words off.
-- No quotes, no punctuation at the end, no emoji, no markdown, no extra labels or explanation.
-
-Example:
-TITLE: Fix OAuth callback`;
+- Use the same language as the user.
+- Summarize the concrete task as a natural, complete phrase.
+- Use at most ${maxChars} Unicode characters; omit details rather than ending mid-thought.
+- No quotes, Markdown, emoji, explanation, or ending punctuation.`;
 }
 
 function normalizeTitleLimit(maxChars: number): number {
@@ -68,28 +62,6 @@ export function formatTitle(value: string, caseStyle: TitleCaseStyle): string {
   return value.replace(/(^|\s)(\p{L})/gu, (_match, separator: string, letter: string) =>
     `${separator}${letter.toUpperCase()}`,
   );
-}
-
-export function compactTitle(value: string, maxChars = DEFAULT_TITLE_MAX_CHARS): string | undefined {
-  const title = sanitizeTitle(value);
-  if (!title) return undefined;
-
-  const limit = normalizeTitleLimit(maxChars);
-  const characters = Array.from(title);
-  if (characters.length <= limit) return title;
-
-  const candidate = characters.slice(0, limit).join("").trimEnd();
-  const nextCharacter = characters[limit];
-  const cutsWord =
-    nextCharacter !== undefined &&
-    /[\p{L}\p{M}\p{N}\p{Pc}]/u.test(nextCharacter) &&
-    /[\p{L}\p{M}\p{N}\p{Pc}]$/u.test(candidate);
-
-  if (!cutsWord) return candidate || undefined;
-
-  const lastSpace = candidate.lastIndexOf(" ");
-  if (lastSpace <= 0) return undefined;
-  return candidate.slice(0, lastSpace).trimEnd() || undefined;
 }
 
 function cleanGeneratedValue(value: string): string {
@@ -260,7 +232,7 @@ export async function generateTitle(
     .join("\n");
 
   const parsed = parseGeneratedTitle(generated);
-  const title = compactTitle(parsed.title ?? "", config.maxChars);
+  const title = sanitizeTitle(parsed.title ?? "") || undefined;
 
   if (!title) {
     return { ok: false, reason: "invalid_output" };

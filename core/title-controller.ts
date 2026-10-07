@@ -6,8 +6,8 @@ import type {
 
 import {
   buildConversationNamingSource,
-  compactTitle,
   describeRenameFailure,
+  sanitizeTitle,
   generateTitle,
   type NamingConfig,
   type NamingSource,
@@ -112,7 +112,7 @@ export function createTitleController(options: TitleControllerOptions) {
       const existing = options.pi.getSessionName();
       if (!existing) return false;
 
-      const restored = compactTitle(existing, naming.maxChars);
+      const restored = sanitizeTitle(existing);
       if (!restored) return false;
 
       return !!(await persistTitle(restored, ctx));
@@ -127,10 +127,8 @@ export function createTitleController(options: TitleControllerOptions) {
       await ctx.waitForIdle();
       if (renameInFlight) await renameInFlight;
 
-      const naming = options.getNaming();
-
       if (args.trim()) {
-        const explicitTitle = compactTitle(args, naming.maxChars);
+        const explicitTitle = sanitizeTitle(args);
         if (!explicitTitle) {
           notify(ctx, "Usage: /rename [title]", "error");
           return;

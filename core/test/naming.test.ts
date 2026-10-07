@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
-  compactTitle,
   describeRenameFailure,
   formatTitle,
   generateTitle,
@@ -60,31 +59,6 @@ test("title formatting supports title case and lowercase", () => {
   assert.equal(formatTitle("Fix OAuth Callback", "lowercase"), "fix oauth callback");
 });
 
-test("a title within the limit is kept as is", () => {
-  assert.equal(compactTitle("OAuth認証の修正"), "OAuth認証の修正");
-});
-
-test("a title over the limit is shortened at a whole-word boundary", () => {
-  assert.equal(
-    compactTitle("Investigate Trade Credit app insights", 32),
-    "Investigate Trade Credit app",
-  );
-  assert.equal(compactTitle("あ".repeat(40)), undefined);
-  assert.equal(compactTitle("OAuth 🔐 callback details", 12), "OAuth 🔐");
-});
-
-test("a title that sanitizes to nothing is undefined", () => {
-  assert.equal(compactTitle('  "" \n '), undefined);
-});
-
-test("a title limit is applied to Unicode code points", () => {
-  assert.equal(compactTitle("Fix 🔐 OAuth callback", 7), "Fix 🔐");
-});
-
-test("a single overlong word is not cut into a fragment", () => {
-  assert.equal(compactTitle("InvestigateTradeCreditApp", 12), undefined);
-});
-
 test("leading expanded skills are excluded from the first prompt", () => {
   const prompt = `<skill name="example">
 Follow the skill instructions.
@@ -114,13 +88,11 @@ test("generated titles are instructed to honor the configured character limit", 
   );
 
   assert.deepEqual(result, { ok: true, title: "Fix OAuth" });
-  assert.match(systemPrompt, /at most 24 Unicode code points/);
-  assert.match(systemPrompt, /complete phrase instead of cutting words off/);
-  assert.match(systemPrompt, /Never end with a dangling preposition/);
-  assert.match(systemPrompt, /maximum, not a target/);
+  assert.match(systemPrompt, /at most 24 Unicode characters/);
+  assert.match(systemPrompt, /omit details rather than ending mid-thought/);
 });
 
-test("an overlong generated title is shortened without a partial final word", async () => {
+test("an overlong generated title is preserved rather than truncated", async () => {
   const ctx = contextWithProviderStream({
     auth: { ok: true },
     streamSimple: streamReturning("TITLE: Investigate Trade Credit app insights"),
@@ -128,7 +100,7 @@ test("an overlong generated title is shortened without a partial final word", as
 
   const result = await generateTitle("Investigate Trade Credit", "user_message", ctx, NAMING_CONFIG);
 
-  assert.deepEqual(result, { ok: true, title: "Investigate Trade Credit app" });
+  assert.deepEqual(result, { ok: true, title: "Investigate Trade Credit app insights" });
 });
 
 test("an extension-registered provider streams the title itself", async () => {
